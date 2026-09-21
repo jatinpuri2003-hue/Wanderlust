@@ -1,3 +1,8 @@
+
+if(process.env.Node_ENV !== "production"){
+    require('dotenv').config();
+}
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -31,7 +36,7 @@ app.engine("ejs", ejsMate);
 
 async function main(){
     // await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust");
-    await mongoose.connect("mongodb+srv://jatinpuri2003_db_user:wWXxhJLU6Y2wgQtn@cluster0.innl1is.mongodb.net/?appName=Cluster0");
+    await mongoose.connect(process.env.ATLASDB_URL);
 }
 
 main()
@@ -45,7 +50,7 @@ app.listen(8080, ()=>{
 const store = MongoStore.create({
     mongoUrl: "mongodb+srv://jatinpuri2003_db_user:wWXxhJLU6Y2wgQtn@cluster0.innl1is.mongodb.net/?appName=Cluster0",
      crypto: {
-        secret: "mysupersecretcode"
+        secret: process.env.SECRET
     },
     touchAfter: 24*3600
 });
