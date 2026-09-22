@@ -40,12 +40,17 @@ async function main(){
 }
 
 main()
-.then(()=> console.log("connection successful"))
-.catch((err)=> console.log(err));
-
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, ()=>{
-    console.log("server is listening to port 8080");
+.then(() => {
+    console.log(" DB Connection successful!");
+    
+    // Server boots up ONLY after database connection finishes
+    const PORT = process.env.PORT || 8080;
+    app.listen(PORT, () => {
+        console.log(` Server is listening to port ${PORT}`);
+    });
+})
+.catch((err) => {
+    console.error("❌ CRITICAL DATABASE ERROR ON STARTUP:", err);
 });
 
 const store = MongoStore.create({
