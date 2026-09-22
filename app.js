@@ -1,5 +1,5 @@
 
-if(process.env.Node_ENV !== "production"){
+if(process.env.NODE_ENV !== "production"){
     require('dotenv').config();
 }
 
@@ -43,12 +43,13 @@ main()
 .then(()=> console.log("connection successful"))
 .catch((err)=> console.log(err));
 
-app.listen(8080, ()=>{
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, ()=>{
     console.log("server is listening to port 8080");
 });
 
 const store = MongoStore.create({
-    mongoUrl: "mongodb+srv://jatinpuri2003_db_user:wWXxhJLU6Y2wgQtn@cluster0.innl1is.mongodb.net/?appName=Cluster0",
+    mongoUrl: process.env.ATLASDB_URL,
      crypto: {
         secret: process.env.SECRET
     },
@@ -61,7 +62,7 @@ store.on("error",(err)=>{
  
 const sessionOptions = {
     store: store,
-    secret: "mysupersecretcode",
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
