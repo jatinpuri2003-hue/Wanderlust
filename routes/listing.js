@@ -7,7 +7,7 @@ const multer = require("multer");
 const upload = multer({dest: 'uploads/'});
 
 const listingController = require("../controllers/listings.js");
-
+ 
 router
     .route("/")
     // index route
@@ -26,6 +26,9 @@ router
 
 // new route
 router.get("/new", isLoggedIn, listingController.renderNewForm);
+
+// search router above :id route to avoid express mismatch
+router.get("/search", isLoggedIn, listingController.searchListing);
 
 router
     .route("/:id")

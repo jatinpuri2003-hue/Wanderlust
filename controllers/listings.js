@@ -5,7 +5,7 @@ module.exports.index = async (req,res)=>{
     const allListings =  await Listing.find();
     res.render("listings/index.ejs", {allListings});
 }
-
+ 
 module.exports.renderNewForm = (req,res)=>{  
 
     res.render("listings/new.ejs");
@@ -94,3 +94,30 @@ module.exports.deleteListing = async (req,res)=>{
     res.redirect("/listings");
 }
 
+module.exports.searchListing = async (req,res)=>{
+
+    let {q} = req.query;
+
+    if(!q || q.trim()=="")
+    {
+        req.flash("error", "No Results Found!");
+        return res.redirect("/listings");
+    }
+
+    let allListings = await Listing.find({
+        $or :[
+            {title: {$regex: q, $options: "i"}},
+            {location: {$regex: q, $options: "i"}},
+            {country: {$regex: q, $options: "i"}}
+        ]
+    });
+
+    if(allListings.length == 0)
+    {
+        req.flash("error", "No Results Found!");
+        return res.redirect("/listings");
+    }
+
+    res.render("listings/search.ejs", {allListings, q});
+
+}
